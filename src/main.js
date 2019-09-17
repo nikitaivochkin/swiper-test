@@ -1,4 +1,6 @@
+import '../src/styles/main.sass';
 import WatchJS from 'melanke-watchjs';
+
 const watch = WatchJS.watch;
 
 const next = document.querySelector('a[data-slide="next"]');
@@ -58,7 +60,7 @@ next.addEventListener('click', ({ target }) => {
     } if (state.next.position === 0) {
         state.next.position = length;
     }
-
+    
     state.previous.position -= 1;
     state.current.position -= 1;
     state.next.position -= 1;
