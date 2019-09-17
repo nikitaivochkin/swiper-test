@@ -3,8 +3,8 @@ import 'index.html';
 import WatchJS from 'melanke-watchjs';
 
 const watch = WatchJS.watch;
-const nextSlide = document.querySelector('a[data-slide="next"]');
-const prevSlide = document.querySelector('a[data-slide="prev"]');
+const nextBtn = document.querySelector('a[data-slide="next"]');
+const prevBtn = document.querySelector('a[data-slide="prev"]');
 
 const cActiveEls = document.querySelector('.slider-inner').querySelectorAll('.slider-item');
 const container = document.querySelector('.slider-container');
@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 watch(state, ['previous', 'current', 'next'], () => {
     container.innerHTML = null;
-    getSliedrElements(window.innerWidth)
+    getSliedrElements(window.innerWidth);
 });
 
 window.addEventListener('resize', () => {
@@ -55,7 +55,7 @@ window.addEventListener('resize', () => {
     getSliedrElements(window.innerWidth);
 });
 
-nextSlide.addEventListener('click', ({ target }) => {
+const nextSlide = ({ target }) => {
     const slides = target.closest('#slider').querySelector('.slider-inner').querySelectorAll('.slider-item');
     const length = slides.length;
     
@@ -74,9 +74,9 @@ nextSlide.addEventListener('click', ({ target }) => {
     state.previous.node = slides[state.previous.position];
     state.current.node = slides[state.current.position];
     state.next.node = slides[state.next.position];
-});
+};
 
-prevSlide.addEventListener('click', ({ target }) => {
+const prevSlide = ({ target }) => {
     const slides = target.closest('#slider').querySelector('.slider-inner').querySelectorAll('.slider-item');
     const length = slides.length - 1;
     
@@ -87,7 +87,7 @@ prevSlide.addEventListener('click', ({ target }) => {
     } if (state.previous.position === length) {
         state.previous.position = -1;
     }
-
+    
     state.previous.position += 1;
     state.current.position += 1;
     state.next.position += 1;
@@ -95,4 +95,8 @@ prevSlide.addEventListener('click', ({ target }) => {
     state.previous.node = slides[state.previous.position];
     state.current.node = slides[state.current.position];
     state.next.node = slides[state.next.position];
-});
+}
+
+nextBtn.addEventListener('click', nextSlide);
+
+prevBtn.addEventListener('click', prevSlide);
