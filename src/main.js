@@ -2,9 +2,8 @@ import '../src/styles/main.sass';
 import WatchJS from 'melanke-watchjs';
 
 const watch = WatchJS.watch;
-
-const next = document.querySelector('a[data-slide="next"]');
-const prev = document.querySelector('a[data-slide="prev"]');
+const nextSlide = document.querySelector('a[data-slide="next"]');
+const prevSlide = document.querySelector('a[data-slide="prev"]');
 
 const cActiveEls = document.querySelector('.slider-inner').querySelectorAll('.slider-item');
 const container = document.querySelector('.slider-container');
@@ -24,32 +23,38 @@ const state = {
     },
 };
 
-watch(state, ['previous', 'current', 'next'], () => {
-    container.innerHTML = null;
-
-    const previous = state.previous.node.cloneNode(true)
-    const current = state.current.node.cloneNode(true)
-    const next = state.next.node.cloneNode(true)
-    
+const getSliedrElements = (windowWidth) => {
+    const previous = state.previous.node.cloneNode(true);
+    const current = state.current.node.cloneNode(true);
+    const next = state.next.node.cloneNode(true);
     previous.classList.add('active');
     current.classList.add('active');
     next.classList.add('active');
     
-    container.append(previous, current, next);
-});
+    if (windowWidth >= 1024) {
+        container.append(previous, current, next);
+    } if (windowWidth >= 768 && windowWidth < 1024) {
+        container.append(previous, current);
+    } if (windowWidth < 768) {
+        container.append(previous);
+    }
+};
 
 document.addEventListener("DOMContentLoaded", () => {
-    const previous = state.previous.node.cloneNode(true)
-    const current = state.current.node.cloneNode(true)
-    const next = state.next.node.cloneNode(true)
-    
-    previous.classList.add('active');
-    current.classList.add('active');
-    next.classList.add('active');
-    container.append(previous, current, next);
+    getSliedrElements(window.innerWidth);
 });
 
-next.addEventListener('click', ({ target }) => {
+watch(state, ['previous', 'current', 'next'], () => {
+    container.innerHTML = null;
+    getSliedrElements(window.innerWidth)
+});
+
+window.addEventListener('resize', () => {
+    container.innerHTML = null;
+    getSliedrElements(window.innerWidth);
+});
+
+nextSlide.addEventListener('click', ({ target }) => {
     const slides = target.closest('#slider').querySelector('.slider-inner').querySelectorAll('.slider-item');
     const length = slides.length;
     
@@ -70,7 +75,7 @@ next.addEventListener('click', ({ target }) => {
     state.next.node = slides[state.next.position];
 });
 
-prev.addEventListener('click', ({ target }) => {
+prevSlide.addEventListener('click', ({ target }) => {
     const slides = target.closest('#slider').querySelector('.slider-inner').querySelectorAll('.slider-item');
     const length = slides.length - 1;
     
