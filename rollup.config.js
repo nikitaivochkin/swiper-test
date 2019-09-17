@@ -2,8 +2,9 @@ import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import { terser } from 'rollup-plugin-terser';
 import sass from 'rollup-plugin-sass';
-import serve from 'rollup-plugin-serve'
-import livereload from 'rollup-plugin-livereload'
+import serve from 'rollup-plugin-serve';
+import livereload from 'rollup-plugin-livereload';
+import html from 'rollup-plugin-bundle-html';
 
 // `npm run build` -> `production` is true
 // `npm run dev` -> `production` is false
@@ -24,6 +25,13 @@ export default {
 			output: 'public/styles/bundle.css',
 		}),
 		serve(),
-    	livereload('public')
+		livereload('public'),
+		html({
+			template: 'src/index.html',
+			dest: "public",
+			filename: 'index.html',
+			inject: 'head'
+		}),
+		svg()
 	]
 };

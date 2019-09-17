@@ -1,4 +1,5 @@
 import '../src/styles/main.sass';
+import 'index.html';
 import WatchJS from 'melanke-watchjs';
 
 const watch = WatchJS.watch;
