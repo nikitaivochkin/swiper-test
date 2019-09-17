@@ -1,6 +1,9 @@
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import { terser } from 'rollup-plugin-terser';
+import sass from 'rollup-plugin-sass';
+import serve from 'rollup-plugin-serve'
+import livereload from 'rollup-plugin-livereload'
 
 // `npm run build` -> `production` is true
 // `npm run dev` -> `production` is false
@@ -16,6 +19,11 @@ export default {
 	plugins: [
 		resolve(), // tells Rollup how to find date-fns in node_modules
 		commonjs(), // converts date-fns to ES modules
-		production && terser() // minify, but only in production
+		production && terser(), // minify, but only in production
+		sass({
+			output: 'public/styles/bundle.css',
+		}),
+		serve(),
+    	livereload('public')
 	]
 };
