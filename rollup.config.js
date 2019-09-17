@@ -31,7 +31,6 @@ export default {
 			dest: "public",
 			filename: 'index.html',
 			inject: 'head'
-		}),
-		svg()
+		})
 	]
 };
