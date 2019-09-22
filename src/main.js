@@ -78,32 +78,33 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 watch(state.previous, 'node', () => {
-    
     const itemWidth = document.querySelector('.active').querySelector('.slider-item-img').width;
             
-    document.querySelector('.hidePrev').style.width = `${itemWidth}px`;
-    document.querySelector('.hideNext').style.width = `${itemWidth}px`;
+    // document.querySelector('.hidePrev').style.width = `${itemWidth}px`;
+    // document.querySelector('.hideNext').style.width = `${itemWidth}px`;
+
     const containerLength = document.querySelector('.slider-container').childNodes.length - 2;
     const speed = {
         3: 34,
-        2: 47,
-        1: 91,
+        2: 50,
+        1: 95,
     };
 
     animate({
-        duration: 500,
+        duration: 800,
         timing: function(timeFraction) {
           return timeFraction;
         },
         draw: function(progress) {
-            
             container.style.right = '0%';
+            if (state.event === 'next') document.querySelector('.hideNext').style.display = 'none';
             state.event === 'next' ? container.style.transform = `translateX(${progress * speed[containerLength]}%)` :
                 container.style.transform = `translateX(-${progress * speed[containerLength]}%)`
+                document.querySelector('.hideNext').style.width = `${progress * itemWidth}px`;
+                document.querySelector('.hidePrev').style.width = `${progress * itemWidth}px`;
           if (progress === 1) {
             container.innerHTML = null;
             getSliedrElements(window.innerWidth);
-            
             state.event === 'next' ? container.style.right = `${speed[containerLength]}%` : container.style.right = `-${speed[containerLength]}%`
             state.event === 'next' ? container.style.transform = `translateX(${progress * speed[containerLength]}%)` :
                 container.style.transform = `translateX(-${progress * speed[containerLength]}%)`
