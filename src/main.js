@@ -32,6 +32,7 @@ const state = {
 
 const getSlidesBasedOnScreen = {
     parser: (windowWidth, els) => {
+        
         if (windowWidth >= 1024) {
             container.append(els.hidePrev, els.previous, els.current, els.next, els.hideNext);
         } if (windowWidth >= 768 && windowWidth < 1024) {
@@ -43,7 +44,7 @@ const getSlidesBasedOnScreen = {
     quantity: (target, containerLength) => {
         const slides = target.closest('#slider').querySelector('.slider-inner').querySelectorAll('.slider-item');
         const length = slides.length;
-        console.log(containerLength)
+
         if (containerLength >= 5) {
             return state.next.position === length - 1 ? 0 : state.next.position + 1
         } if (containerLength === 4) {
@@ -55,7 +56,6 @@ const getSlidesBasedOnScreen = {
 };
 
 const getSliedrElements = (windowWidth) => {
-
     const elements = {
         hidePrev: state.hide.nodePrev.cloneNode(true),
         hideNext: state.hide.nodeNext.cloneNode(true),
@@ -79,21 +79,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
 watch(state.previous, 'node', () => {
     
+    const itemWidth = document.querySelector('.active').querySelector('.slider-item-img').width;
+            
+    document.querySelector('.hidePrev').style.width = `${itemWidth}px`;
+    document.querySelector('.hideNext').style.width = `${itemWidth}px`;
+    const containerLength = document.querySelector('.slider-container').childNodes.length - 2;
+    const speed = {
+        3: 34,
+        2: 47,
+        1: 91,
+    };
+
     animate({
-        duration: 1000,
+        duration: 500,
         timing: function(timeFraction) {
           return timeFraction;
         },
         draw: function(progress) {
+            
             container.style.right = '0%';
-            state.event === 'next' ? container.style.transform = `translateX(${progress * 34}%)` :
-                container.style.transform = `translateX(-${progress * 34}%)`
+            state.event === 'next' ? container.style.transform = `translateX(${progress * speed[containerLength]}%)` :
+                container.style.transform = `translateX(-${progress * speed[containerLength]}%)`
           if (progress === 1) {
             container.innerHTML = null;
             getSliedrElements(window.innerWidth);
-            state.event === 'next' ? container.style.right = '34%' : container.style.right = '-34%'
-            state.event === 'next' ? container.style.transform = `translateX(${progress * 34}%)` :
-                container.style.transform = `translateX(-${progress * 34}%)`
+            
+            state.event === 'next' ? container.style.right = `${speed[containerLength]}%` : container.style.right = `-${speed[containerLength]}%`
+            state.event === 'next' ? container.style.transform = `translateX(${progress * speed[containerLength]}%)` :
+                container.style.transform = `translateX(-${progress * speed[containerLength]}%)`
           }
         }
       });
