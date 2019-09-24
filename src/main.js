@@ -98,6 +98,7 @@ watch(state.previous, 'node', () => {
         draw: function(progress) {
             container.style.right = '0%';
             if (state.event === 'next') document.querySelector('.hideNext').style.display = 'none';
+            if (state.event === 'next') document.querySelector('.hideNext').style.display = 'none';
             state.event === 'next' ? container.style.transform = `translateX(${progress * speed[containerLength]}%)` :
                 container.style.transform = `translateX(-${progress * speed[containerLength]}%)`
                 document.querySelector('.hideNext').style.width = `${progress * itemWidth}px`;

@@ -15,7 +15,7 @@ body
     width: 100%
 
 .slider
-    display: block
+    display: flex
     width: 60%
 
 .slider-inner
@@ -43,7 +43,7 @@ body
 .slider-item.hidePrev
     position: absolute
     display: flex
-    width: 30%
+    width: 10%
     right: 100%
     margin-left: 10px
     margin-right: 10px
@@ -51,7 +51,7 @@ body
 .slider-item.hideNext
     position: absolute
     display: flex
-    width: 30%
+    width: 10%
     left: 100%
     margin-left: 10px
     margin-right: 10px
@@ -104,9 +104,19 @@ img
     vertical-align: middle
     text-align: center
 
+@media (max-width: 1024px)
+    img
+        // width: 90%
+
+    .slider-item
+        margin-left: 5px
+        margin-right: 5px
+
 @media (max-width: 767px)
     .slider-next-icon
         display: none
 
     .slider-prev-icon
         display: none
+
+    
