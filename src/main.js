@@ -10,10 +10,20 @@ const prevBtn = document.querySelector('a[data-slide="prev"]');
 const cActiveEls = document.querySelector('.slider-inner').querySelectorAll('.slider-item');
 const container = document.querySelector('.slider-container');
 
+const getStartPosition = (windowWidth) => {
+    if (windowWidth >= 1024) {
+        return 3;
+    } if (windowWidth >= 768 && windowWidth < 1024) {
+        return 2;
+    } if (windowWidth < 768) {
+        return 1;
+    }
+};
+
 const state = {
     hide: {
         nodePrev: cActiveEls[cActiveEls.length - 1],
-        nodeNext: cActiveEls[cActiveEls.length - container.childNodes.length - cActiveEls.length + 1],
+        nodeNext: cActiveEls[getStartPosition(window.innerWidth)],
     },
     previous: {
         node: cActiveEls[0],
@@ -79,9 +89,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 watch(state.previous, 'node', () => {
     const itemWidth = document.querySelector('.active').querySelector('.slider-item-img').width;
-            
-    // document.querySelector('.hidePrev').style.width = `${itemWidth}px`;
-    // document.querySelector('.hideNext').style.width = `${itemWidth}px`;
 
     const containerLength = document.querySelector('.slider-container').childNodes.length - 2;
     const speed = {
@@ -98,11 +105,13 @@ watch(state.previous, 'node', () => {
         draw: function(progress) {
             container.style.right = '0%';
             if (state.event === 'next') document.querySelector('.hideNext').style.display = 'none';
-            if (state.event === 'next') document.querySelector('.hideNext').style.display = 'none';
+            if (state.event === 'prev') document.querySelector('.hidePrev').style.display = 'none';
             state.event === 'next' ? container.style.transform = `translateX(${progress * speed[containerLength]}%)` :
                 container.style.transform = `translateX(-${progress * speed[containerLength]}%)`
                 document.querySelector('.hideNext').style.width = `${progress * itemWidth}px`;
                 document.querySelector('.hidePrev').style.width = `${progress * itemWidth}px`;
+                document.querySelector('.hidePrev').querySelector('.slider-item-title').style['font-size'] = `${progress * 20}px`;
+                document.querySelector('.hideNext').querySelector('.slider-item-title').style['font-size'] = `${progress * 20}px`;
           if (progress === 1) {
             container.innerHTML = null;
             getSliedrElements(window.innerWidth);
