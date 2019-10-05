@@ -52,7 +52,7 @@ const getSlidesBasedOnScreen = {
         }
     },
     quantity: (target, containerLength) => {
-        const slides = target.closest('#slider').querySelector('.slider-inner').querySelectorAll('.slider-item');
+        const slides = document.querySelector('.slider-inner').querySelectorAll('.slider-item');
         const length = slides.length;
 
         if (containerLength >= 5) {
@@ -94,7 +94,7 @@ watch(state.previous, 'node', () => {
     const speed = {
         3: 34,
         2: 50,
-        1: 95,
+        1: 100,
     };
 
     animate({
@@ -108,10 +108,8 @@ watch(state.previous, 'node', () => {
             if (state.event === 'prev') document.querySelector('.hidePrev').style.display = 'none';
             state.event === 'next' ? container.style.transform = `translateX(${progress * speed[containerLength]}%)` :
                 container.style.transform = `translateX(-${progress * speed[containerLength]}%)`
-                document.querySelector('.hideNext').style.width = `${progress * itemWidth}px`;
-                document.querySelector('.hidePrev').style.width = `${progress * itemWidth}px`;
-                document.querySelector('.hidePrev').querySelector('.slider-item-title').style['font-size'] = `${progress * 20}px`;
-                document.querySelector('.hideNext').querySelector('.slider-item-title').style['font-size'] = `${progress * 20}px`;
+                document.querySelector('.hideNext').style.width = `${itemWidth}px`;
+                document.querySelector('.hidePrev').style.width = `${itemWidth}px`;
           if (progress === 1) {
             container.innerHTML = null;
             getSliedrElements(window.innerWidth);
@@ -129,7 +127,7 @@ window.addEventListener('resize', () => {
 });
 
 const nextSlide = ({ target }) => {
-    const slides = target.closest('#slider').querySelector('.slider-inner').querySelectorAll('.slider-item');
+    const slides = document.querySelector('.slider-inner').querySelectorAll('.slider-item');
     const length = slides.length;
     
     if (state.previous.position === 0) {
@@ -153,9 +151,9 @@ const nextSlide = ({ target }) => {
 };
 
 const prevSlide = ({ target }) => {
-    const slides = target.closest('#slider').querySelector('.slider-inner').querySelectorAll('.slider-item');
+    const slides = document.querySelector('.slider-inner').querySelectorAll('.slider-item');
     const length = slides.length - 1;
-    
+
     if (state.next.position === length) {
         state.next.position = -1;
     } if (state.current.position === length) {
@@ -179,3 +177,24 @@ const prevSlide = ({ target }) => {
 nextBtn.addEventListener('click', nextSlide);
 
 prevBtn.addEventListener('click', prevSlide);
+
+var initialPoint;
+var finalPoint;
+document.addEventListener('touchstart', (event) => {
+    initialPoint=event.changedTouches[0];
+}, false);
+document.addEventListener('touchend', (event) => {
+    finalPoint=event.changedTouches[0];
+    var xAbs = Math.abs(initialPoint.pageX - finalPoint.pageX);
+    var yAbs = Math.abs(initialPoint.pageY - finalPoint.pageY);
+    if (xAbs > 20 || yAbs > 20) {
+        if (xAbs > yAbs) {
+            if (finalPoint.pageX < initialPoint.pageX){
+                prevSlide(prevBtn);
+            }
+            else {
+                nextSlide(nextBtn);
+            }
+        }
+    }
+}, false);
