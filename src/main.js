@@ -104,7 +104,7 @@ watch(state.previous, 'node', () => {
     const speed = {
         3: 34,
         2: 50,
-        1: 100,
+        1: 95,
     };
 
     animate({

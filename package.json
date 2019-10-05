@@ -6,6 +6,7 @@
     "rollup-plugin-bundle-html": "^0.2.1",
     "rollup-plugin-commonjs": "^10.0.0",
     "rollup-plugin-copy": "^3.1.0",
+    "rollup-plugin-imagemin": "^0.4.1",
     "rollup-plugin-img": "^1.1.0",
     "rollup-plugin-livereload": "^1.0.1",
     "rollup-plugin-node-resolve": "^5.1.0",

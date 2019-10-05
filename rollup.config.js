@@ -8,6 +8,7 @@ import html from 'rollup-plugin-bundle-html';
 import image from 'rollup-plugin-img';
 import svg from 'rollup-plugin-svg';
 import copy from 'rollup-plugin-copy';
+import imagemin from "rollup-plugin-imagemin";
 
 // `npm run build` -> `production` is true
 // `npm run dev` -> `production` is false
@@ -35,6 +36,7 @@ export default {
 			  { src: 'src/svg/*', dest: 'public/svg' }
 			]
 		}),
+		imagemin(),
 		image({
 			output: `public/img`
 		}),
