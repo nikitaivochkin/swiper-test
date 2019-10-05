@@ -1,4 +1,14 @@
 import '../src/styles/main.sass';
+import '../src/img/1.jpg';
+import '../src/img/2.jpg';
+import '../src/img/3.jpg';
+import '../src/img/5.jpg';
+import '../src/img/6.jpg';
+import '../src/img/7.jpg';
+import '../src/img/8.jpg';
+import '../src/img/9.jpg';
+import '../src/svg/left-arrow.svg';
+import '../src/svg/right-arrow.svg'
 import 'index.html';
 import WatchJS from 'melanke-watchjs';
 import animate from './animate'
@@ -180,9 +190,11 @@ prevBtn.addEventListener('click', prevSlide);
 
 var initialPoint;
 var finalPoint;
+
 document.addEventListener('touchstart', (event) => {
     initialPoint=event.changedTouches[0];
 }, false);
+
 document.addEventListener('touchend', (event) => {
     finalPoint=event.changedTouches[0];
     var xAbs = Math.abs(initialPoint.pageX - finalPoint.pageX);
