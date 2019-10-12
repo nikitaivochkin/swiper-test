@@ -109,10 +109,10 @@ watch(state.previous, 'node', () => {
 
     animate({
         duration: 800,
-        timing: function(timeFraction) {
+        timing: (timeFraction) => {
           return timeFraction;
         },
-        draw: function(progress) {
+        draw: (progress) => {
             container.style.right = '0%';
             if (state.event === 'next') document.querySelector('.hideNext').style.display = 'none';
             if (state.event === 'prev') document.querySelector('.hidePrev').style.display = 'none';
@@ -128,7 +128,7 @@ watch(state.previous, 'node', () => {
                 container.style.transform = `translateX(-${progress * speed[containerLength]}%)`
           }
         }
-      });
+    });
 });
 
 window.addEventListener('resize', () => {
