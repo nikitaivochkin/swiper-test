@@ -107,13 +107,13 @@ watch(state.previous, 'node', () => {
 
   const containerLength = document.querySelector('.slider-container').childNodes.length - 2;
   const speed = {
-    3: 34,
+    3: 33,
     2: 50,
     1: 95,
   };
 
   animate({
-    duration: 800,
+    duration: 900,
     timing: (timeFraction) => timeFraction,
     draw: (progress) => {
       container.style.right = '0%';
@@ -180,7 +180,7 @@ const prevSlide = ({ target }) => {
   state.current.position += 1;
   state.next.position += 1;
 
-  state.hide.nodePrev = slides[state.previous.position === 0 ? length - 1 : state.previous.position - 1];
+  state.hide.nodePrev = slides[state.previous.position === 0 ? length : state.previous.position - 1];
   state.hide.nodeNext = slides[getSlidesBasedOnScreen.quantity(target, container.childNodes.length)];
   state.previous.node = slides[state.previous.position];
   state.current.node = slides[state.current.position];
