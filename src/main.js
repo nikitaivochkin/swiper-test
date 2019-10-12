@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable import/no-unresolved */
 /* eslint-disable prefer-destructuring */
