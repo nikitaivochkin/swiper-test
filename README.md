@@ -1,4 +1,4 @@
-First test task.
+# Swiper
 
 For local start - npm run start;
 
