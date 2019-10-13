@@ -113,7 +113,7 @@ watch(state.previous, 'node', () => {
   };
 
   animate({
-    duration: 900,
+    duration: 1000,
     timing: (timeFraction) => timeFraction,
     draw: (progress) => {
       container.style.right = '0%';
@@ -126,7 +126,8 @@ watch(state.previous, 'node', () => {
       if (progress === 1) {
         container.innerHTML = null;
         getSliedrElements(window.innerWidth);
-        state.event === 'next' ? container.style.right = `${speed[containerLength]}%` : container.style.right = `-${speed[containerLength]}%`;
+        state.event === 'next' ? container.style.right = `${speed[containerLength]}%`
+          : container.style.right = `-${speed[containerLength]}%`;
         state.event === 'next' ? container.style.transform = `translateX(${progress * speed[containerLength]}%)`
           : container.style.transform = `translateX(-${progress * speed[containerLength]}%)`;
       }
