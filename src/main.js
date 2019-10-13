@@ -157,6 +157,8 @@ watch(state.previous, 'node', () => {
     duration: 800,
     timing: (timeFraction) => timeFraction,
     draw: (progress) => {
+      nextBtn.style.pointerEvents = 'none';
+      prevBtn.style.pointerEvents = 'none';
       const nextItem = document.querySelector('.hideNext');
       const prevImet = document.querySelector('.hidePrev');
       container.style.right = '0%';
@@ -173,6 +175,8 @@ watch(state.previous, 'node', () => {
         state.event === 'next' ? container.style.transform = `translateX(${progress * speed[containerLength]}%)`
           : container.style.transform = `translateX(-${progress * speed[containerLength]}%)`;
 
+        nextBtn.style.pointerEvents = 'auto';
+        prevBtn.style.pointerEvents = 'auto';
         getHiddenElements(window.innerWidth);
       }
     },
