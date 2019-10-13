@@ -57,13 +57,28 @@ const state = {
 };
 
 const getSlidesBasedOnScreen = {
-  parser: (windowWidth, els) => {
+  parser: (event, windowWidth, els) => {
     if (windowWidth >= 1024) {
-      container.append(els.hidePrev, els.previous, els.current, els.next, els.hideNext);
+      if (event === 'DOMContentLoaded' || event === 'resize') {
+        container.append(els.hidePrev, els.previous, els.current, els.next, els.hideNext);
+      } else {
+        container.prepend(els.hidePrev);
+        container.append(els.hideNext);
+      }
     } if (windowWidth >= 768 && windowWidth < 1024) {
-      container.append(els.hidePrev, els.previous, els.current, els.hideNext);
+      if (event === 'DOMContentLoaded' || event === 'resize') {
+        container.append(els.hidePrev, els.previous, els.current, els.hideNext);
+      } else {
+        container.prepend(els.hidePrev);
+        container.append(els.hideNext);
+      }
     } if (windowWidth < 768) {
-      container.append(els.hidePrev, els.previous, els.hideNext);
+      if (event === 'DOMContentLoaded' || event === 'resize') {
+        container.append(els.hidePrev, els.previous, els.hideNext);
+      } else {
+        container.prepend(els.hidePrev);
+        container.append(els.hideNext);
+      }
     }
   },
   quantity: (_target, containerLength) => {
@@ -80,7 +95,7 @@ const getSlidesBasedOnScreen = {
   },
 };
 
-const getSliedrElements = (windowWidth) => {
+const getSliedrElements = (event, windowWidth) => {
   const elements = {
     hidePrev: state.hide.nodePrev.cloneNode(true),
     hideNext: state.hide.nodeNext.cloneNode(true),
@@ -95,49 +110,78 @@ const getSliedrElements = (windowWidth) => {
   elements.current.classList.add('active');
   elements.next.classList.add('active');
 
-  getSlidesBasedOnScreen.parser(windowWidth, elements);
+  getSlidesBasedOnScreen.parser(event, windowWidth, elements);
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-  getSliedrElements(window.innerWidth);
+
+const getHiddenElements = (windowWidth) => {
+  const elements = {
+    hidePrev: state.hide.nodePrev.cloneNode(true),
+    hideNext: state.hide.nodeNext.cloneNode(true),
+  };
+  elements.hidePrev.classList.add('hidePrev');
+  elements.hideNext.classList.add('hideNext');
+  getSlidesBasedOnScreen.parser(state.event, windowWidth, elements);
+};
+
+document.addEventListener('DOMContentLoaded', (event) => {
+  getSliedrElements(event.type, window.innerWidth);
 });
 
 watch(state.previous, 'node', () => {
-  const itemWidth = document.querySelector('.active').querySelector('.slider-item-img').width;
-
+  const itemWidth = document.querySelector('.active').querySelector('img').width;
+  console.log(itemWidth);
   const containerLength = document.querySelector('.slider-container').childNodes.length - 2;
   const speed = {
     3: 33,
     2: 50,
-    1: 95,
+    1: 100,
+  };
+
+  const actions = {
+    next: () => {
+      container.querySelector('.hidePrev').classList.toggle('hidePrev');
+      container.firstChild.classList.toggle('active');
+      container.lastChild.previousSibling.remove();
+      container.lastChild.remove();
+    },
+    prev: () => {
+      container.querySelector('.hideNext').classList.toggle('hideNext');
+      container.lastChild.classList.toggle('active');
+      container.firstChild.nextSibling.remove();
+      container.firstChild.remove();
+    },
   };
 
   animate({
-    duration: 1000,
+    duration: 800,
     timing: (timeFraction) => timeFraction,
     draw: (progress) => {
+      const nextItem = document.querySelector('.hideNext');
+      const prevImet = document.querySelector('.hidePrev');
       container.style.right = '0%';
-      if (state.event === 'next') document.querySelector('.hideNext').style.display = 'none';
-      if (state.event === 'prev') document.querySelector('.hidePrev').style.display = 'none';
       state.event === 'next' ? container.style.transform = `translateX(${progress * speed[containerLength]}%)`
         : container.style.transform = `translateX(-${progress * speed[containerLength]}%)`;
-      document.querySelector('.hideNext').style.width = `${itemWidth}px`;
-      document.querySelector('.hidePrev').style.width = `${itemWidth}px`;
+      nextItem.style.display = 'flex';
+      prevImet.style.display = 'flex';
+      nextItem.querySelector('img').style.width = `${itemWidth}px`;
+      prevImet.querySelector('img').style.width = `${itemWidth}px`;
       if (progress === 1) {
-        container.innerHTML = null;
-        getSliedrElements(window.innerWidth);
+        actions[state.event]();
         state.event === 'next' ? container.style.right = `${speed[containerLength]}%`
           : container.style.right = `-${speed[containerLength]}%`;
         state.event === 'next' ? container.style.transform = `translateX(${progress * speed[containerLength]}%)`
           : container.style.transform = `translateX(-${progress * speed[containerLength]}%)`;
+
+        getHiddenElements(window.innerWidth);
       }
     },
   });
 });
 
-window.addEventListener('resize', () => {
+window.addEventListener('resize', (event) => {
   container.innerHTML = null;
-  getSliedrElements(window.innerWidth, state.event);
+  getSliedrElements(event.type, window.innerWidth);
 });
 
 const nextSlide = ({ target }) => {

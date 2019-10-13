@@ -43,20 +43,18 @@ body
 
 .slider-item.hidePrev
     position: absolute
-    display: flex
+    display: none
     right: 100%
-    width: 30%
-    margin-left: 5px
+    margin-left: 10px
     margin-right: 10px
     justify-content: center
 
 .slider-item.hideNext
     position: absolute
-    display: flex
+    display: none
     left: 100%
-    width: 30%
     margin-left: 10px
-    margin-right: 5px
+    margin-right: 10px
     justify-content: center
 
 .slider-item-title
@@ -103,9 +101,6 @@ body
 img
     width: 100%
     height: auto
-    
-    vertical-align: middle
-    text-align: center
 
 @media (max-width: 1024px)
     html
@@ -136,9 +131,5 @@ img
 
     .slider-prev-icon
         display: none
-
-    .slider-item
-        margin-left: 20px
-        margin-right: 20px
 
     
